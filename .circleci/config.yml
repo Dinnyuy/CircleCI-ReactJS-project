@@ -1,12 +1,11 @@
 version: 2.1
 
 jobs:
-  # Builing the project is going to start
+  # Building the project is going to start
   build:
     machine:
       image: ubuntu-20.04
-      # Specify resource class as medium+
-      resource_class: medium+
+      resource_class: small
       docker_layer_caching: true
     steps:
       - checkout
@@ -26,8 +25,7 @@ jobs:
   deploy: 
     machine:
       image: ubuntu-20.04
-      # Specify resource class as medium+
-      resource_class: medium+
+      resource_class: small
       docker_layer_caching: true
     steps:
       - attach_workspace:
