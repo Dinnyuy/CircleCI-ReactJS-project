@@ -1,10 +1,10 @@
 version: 2.1
+
 jobs:
-# Builing the project is going to start
+  # Builing the project is going to start
   build:
-    # working_directory: ~/repo
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-20.04  # Updated to the latest Ubuntu 20.04 image
       docker_layer_caching: true
     steps:
       - checkout
@@ -19,13 +19,11 @@ jobs:
           root: .
           paths:
             - .
-      
-
-# Deploying the code to AWS S3 Bucket
+            
+  # Deploying the code to AWS S3 Bucket
   deploy: 
-    # working_directory: ~/repo
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-20.04  # Updated to the latest Ubuntu 20.04 image
       docker_layer_caching: true
     steps:
       - attach_workspace:
@@ -39,7 +37,6 @@ jobs:
               aws s3 sync ./app/build s3://${AWS_S3_BUCKET}
             fi
 
-
 workflows:
   version: 2
   execute_bulk:
@@ -52,3 +49,4 @@ workflows:
             branches:
               only:
                 - master
+
