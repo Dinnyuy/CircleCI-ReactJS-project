@@ -1,26 +1,16 @@
 version: 2.1
 
 jobs:
-  # Building the project is going to start
   build:
     machine:
       image: ubuntu-2204:2024.01.1
-    # If running ARM, the resource class needs to be added. Omitting this defaults to amd64
     resource_class: arm.medium
     steps:
       - checkout
       - run:
-          name: Update npm package
-          command: sudo apt-get install -y npm
-      - run:
-          name: Installing AWS CLI
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python3-pip  # Install Python 3 pip
-            sudo pip3 install awscli --upgrade   # Install AWS CLI
-      - run:
           name: Create new package.json
           command: |
+            mkdir -p /home/circleci/project/config
             echo '{
               "name": "e-commerce-site",
               "version": "0.1.0",
@@ -54,36 +44,36 @@ jobs:
                   "last 1 safari version"
                 ]
               }
-            }' > /home/circleci/project/package.json
+            }' > /home/circleci/project/config/package.json
       - run:
-          name: Navigate to project directory
-          command: npm install
+          name: Install dependencies
+          command: npm install --prefix /home/circleci/project/config
       - run:
           name: Build project
-          command: npm run build
-          environment:
-            CI: true
+          command: npm run build --prefix /home/circleci/project/config
 
-  # Deploying the code to AWS S3 Bucket
-  deploy: 
+  deploy:
     machine:
-      image: ubuntu-2204:2024.01.1 # You can keep the Ubuntu image for deployment
-      docker_layer_caching: true
+      image: ubuntu-2204:2024.01.1
     steps:
       - attach_workspace:
-          at: .
-      - checkout
-      - run: 
-          name: Configuring AWS
+          at: /home/circleci/project
+      - run:
+          name: Installing AWS CLI
           command: |
-            ls
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+            sudo pip3 install awscli --upgrade
+      - run:
+          name: Deploy to AWS S3
+          command: |
             if [ $CIRCLE_BRANCH = 'main' ]; then
-              aws s3 sync ./app/build s3://${AWS_S3_BUCKET}
+              aws s3 sync ./config/build s3://${AWS_S3_BUCKET}
             fi
 
 workflows:
   version: 2
-  build_and_deploy:
+  build-and-deploy:
     jobs:
       - build
       - deploy:
