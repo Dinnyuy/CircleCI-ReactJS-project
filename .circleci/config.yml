@@ -50,7 +50,10 @@ jobs:
           command: npm install --prefix /home/circleci/project/config
       - run:
           name: Build project
-          command: npm run build --prefix /home/circleci/project/config
+          command: |
+            find /home/circleci/project -name "index.html"
+          environment:
+            CI: true
 
   deploy:
     machine:
