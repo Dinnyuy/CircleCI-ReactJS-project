@@ -1,5 +1,12 @@
+version: 2.1
+
+jobs:
+  # Builing the project is going to start
+  build:
     machine:
       image: ubuntu-20.04
+      # Specify resource class as medium+
+      resource_class: medium+
       docker_layer_caching: true
     steps:
       - checkout
@@ -16,15 +23,17 @@
             - .
 
   # Deploying the code to AWS S3 Bucket
-  deploy:
+  deploy: 
     machine:
       image: ubuntu-20.04
+      # Specify resource class as medium+
+      resource_class: medium+
       docker_layer_caching: true
     steps:
       - attach_workspace:
           at: .
       - checkout
-      - run:
+      - run: 
           name: Configuring AWS
           command: |
             ls
@@ -44,4 +53,5 @@ workflows:
             branches:
               only:
                 - master
+
 
