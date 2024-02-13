@@ -4,7 +4,7 @@ jobs:
   # Building the project is going to start
   build:
     machine:
-      image: ubuntu-18.04
+      image: ubuntu-2004 # Specify the free Linux image available in CircleCI
       docker_layer_caching: true
     steps:
       - checkout
@@ -12,8 +12,8 @@ jobs:
           name: Installing AWS CLI
           command: |
             sudo apt-get update
-            sudo apt install python3-pip
-            sudo pip3 install awsebcli --upgrade
+            sudo apt-get install -y python3-pip  # Install Python 3 pip
+            sudo pip3 install awscli --upgrade   # Install AWS CLI
       - run: cd ./app && npm install && npm run build
       - persist_to_workspace:
           root: .
@@ -23,7 +23,7 @@ jobs:
   # Deploying the code to AWS S3 Bucket
   deploy: 
     machine:
-      image: ubuntu-18.04
+      image: ubuntu-18.04 # You can keep the Ubuntu image for deployment
       docker_layer_caching: true
     steps:
       - attach_workspace:
@@ -33,13 +33,13 @@ jobs:
           name: Configuring AWS
           command: |
             ls
-            if [ $CIRCLE_BRANCH = 'master' ]; then
+            if [ $CIRCLE_BRANCH = 'main' ]; then
               aws s3 sync ./app/build s3://${AWS_S3_BUCKET}
             fi
 
 workflows:
   version: 2
-  execute_bulk:
+  build_and_deploy:
     jobs:
       - build
       - deploy:
@@ -48,5 +48,5 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
 
