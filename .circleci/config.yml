@@ -4,7 +4,7 @@ jobs:
   # Building the project is going to start
   build:
     machine:
-      image: ubuntu-20.04
+      image: ubuntu-18.04
       docker_layer_caching: true
     steps:
       - checkout
@@ -21,15 +21,15 @@ jobs:
             - .
 
   # Deploying the code to AWS S3 Bucket
-  deploy:
+  deploy: 
     machine:
-      image: ubuntu-20.04
+      image: ubuntu-18.04
       docker_layer_caching: true
     steps:
       - attach_workspace:
           at: .
       - checkout
-      - run:
+      - run: 
           name: Configuring AWS
           command: |
             ls
@@ -49,3 +49,4 @@ workflows:
             branches:
               only:
                 - master
+
