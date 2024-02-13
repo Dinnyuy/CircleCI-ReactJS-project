@@ -62,7 +62,11 @@ jobs:
           command: npm install --prefix /home/circleci/project/config
       - run:
           name: Build project
-          command: npm run build --prefix /home/circleci/project/config && cp /home/circleci/project/config/build/index.html /home/circleci/project/config/public
+          command: |
+            cd /home/circleci/project/config
+            npm install
+            npm run build
+            mv build public
           environment:
             CI: true
 
