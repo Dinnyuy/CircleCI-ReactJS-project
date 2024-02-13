@@ -4,24 +4,28 @@ jobs:
   # Building the project is going to start
   build:
     machine:
-      image: ubuntu-2204:2024.01.1 # Specify the free Linux image available in CircleCI
-      docker_layer_caching: true
+      image: ubuntu-2204:2024.01.1
+    # If running ARM, the resource class needs to be added. Omitting this defaults to amd64
+    resource_class: arm.medium
     steps:
       - checkout
       - run:
-          name: Update npm packages
-          command: npm update
+          name: Update npm
+          command: sudo npm install -g npm@latest
       - run:
           name: Installing AWS CLI
           command: |
             sudo apt-get update
             sudo apt-get install -y python3-pip  # Install Python 3 pip
             sudo pip3 install awscli --upgrade   # Install AWS CLI
-      - run: cd ./app && npm install && npm run build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - run:
+          name: Install Node.js dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: npm run build
+          environment:
+            CI: true
 
   # Deploying the code to AWS S3 Bucket
   deploy: 
