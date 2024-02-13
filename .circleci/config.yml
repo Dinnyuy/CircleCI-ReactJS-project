@@ -1,10 +1,10 @@
 version: 2.1
 
 jobs:
-  # Builing the project is going to start
+  # Building the project is going to start
   build:
     machine:
-      image: ubuntu-20.04  # Updated to the latest Ubuntu 20.04 image
+      image: ubuntu-20.04
       docker_layer_caching: true
     steps:
       - checkout
@@ -19,11 +19,11 @@ jobs:
           root: .
           paths:
             - .
-            
+
   # Deploying the code to AWS S3 Bucket
   deploy: 
     machine:
-      image: ubuntu-20.04  # Updated to the latest Ubuntu 20.04 image
+      image: ubuntu-20.04
       docker_layer_caching: true
     steps:
       - attach_workspace:
@@ -49,4 +49,5 @@ workflows:
             branches:
               only:
                 - master
+
 
