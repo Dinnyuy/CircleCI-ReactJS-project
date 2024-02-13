@@ -19,10 +19,45 @@ jobs:
             sudo apt-get install -y python3-pip  # Install Python 3 pip
             sudo pip3 install awscli --upgrade   # Install AWS CLI
       - run:
+          name: Create new package.json
+          command: |
+            echo '{
+              "name": "e-commerce-site",
+              "version": "0.1.0",
+              "private": true,
+              "dependencies": {
+                "bootstrap": "^4.3.1",
+                "react": "^16.8.6",
+                "react-dom": "^16.8.6",
+                "react-router-dom": "^5.0.1",
+                "react-scripts": "3.0.1",
+                "styled-components": "^4.3.2"
+              },
+              "scripts": {
+                "start": "react-scripts start",
+                "build": "react-scripts build",
+                "test": "react-scripts test",
+                "eject": "react-scripts eject"
+              },
+              "eslintConfig": {
+                "extends": "react-app"
+              },
+              "browserslist": {
+                "production": [
+                  ">0.2%",
+                  "not dead",
+                  "not op_mini all"
+                ],
+                "development": [
+                  "last 1 chrome version",
+                  "last 1 firefox version",
+                  "last 1 safari version"
+                ]
+              }
+            }' > /home/circleci/project/package.json
+      - run:
           name: Navigate to project directory
-          command: | 
-            cd CircleCI-ReactJS-project/app
-            npm install
+          command: npm install
       - run:
           name: Build project
           command: npm run build
