@@ -20,7 +20,8 @@ jobs:
             sudo pip3 install awscli --upgrade   # Install AWS CLI
       - run:
           name: Navigate to project directory
-          command: cd app
+          command: | 
+            cd app
       - run:
           name: Install Node.js dependencies
           command: npm install
