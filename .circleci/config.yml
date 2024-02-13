@@ -4,7 +4,7 @@ jobs:
   # Building the project is going to start
   build:
     machine:
-      image: ubuntu-2004 # Specify the free Linux image available in CircleCI
+      image: ubuntu-2204:2024.01.1 # Specify the free Linux image available in CircleCI
       docker_layer_caching: true
     steps:
       - checkout
@@ -26,7 +26,7 @@ jobs:
   # Deploying the code to AWS S3 Bucket
   deploy: 
     machine:
-      image: ubuntu-18.04 # You can keep the Ubuntu image for deployment
+      image: ubuntu-2204:2024.01.1 # You can keep the Ubuntu image for deployment
       docker_layer_caching: true
     steps:
       - attach_workspace:
