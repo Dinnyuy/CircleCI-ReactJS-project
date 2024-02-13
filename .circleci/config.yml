@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Navigate to project directory
           command: | 
-            cd app
+            cd CircleCI-ReactJS-project/app
             npm install
       - run:
           name: Build project
