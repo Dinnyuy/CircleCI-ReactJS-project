@@ -71,7 +71,7 @@ jobs:
           name: Deploy to AWS S3
           command: |
             if [ $CIRCLE_BRANCH = 'master' ]; then
-              aws s3 sync ./config/build s3://circleciproject
+              aws s3 sync ./app/build s3://circleciproject
             fi
 
 workflows:
