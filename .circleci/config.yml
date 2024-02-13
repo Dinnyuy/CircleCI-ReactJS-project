@@ -19,6 +19,9 @@ jobs:
             sudo apt-get install -y python3-pip  # Install Python 3 pip
             sudo pip3 install awscli --upgrade   # Install AWS CLI
       - run:
+          name: Navigate to project directory
+          command: cd /home/circleci/project/
+      - run:
           name: Install Node.js dependencies
           command: npm install
       - run:
