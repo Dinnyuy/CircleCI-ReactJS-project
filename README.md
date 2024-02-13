@@ -1,8 +1,10 @@
 Overview
 This project uses CircleCI to automate the build and deployment processes. The configuration file .circleci/config.yml defines the steps and workflows for building and deploying the project.
 
+
 Jobs
 1. Build Job
+
 Description: Building the project.
 Machine: Ubuntu 20.04
 Docker Layer Caching: Enabled
@@ -12,7 +14,9 @@ checkout: Fetch the source code.
 Installing AWS CLI: Install AWS CLI for deployment.
 npm install && npm run build: Install dependencies and build the project.
 persist_to_workspace: Save the build artifacts to the workspace.
+
 2. Deploy Job
+
 Description: Deploying the code to AWS S3 Bucket.
 Machine: Ubuntu 20.04
 Docker Layer Caching: Enabled
