@@ -8,6 +8,18 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Update npm package
+          command: sudo apt-get install -y npm
+      - run:
+          name: Installing AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python3-pip  # Install Python 3 pip
+            sudo pip3 install awscli --upgrade   # Install AWS CLI
+      - run:
+          name: Navigate to project directory
+          command: cd /home/circleci/project/
+      - run:
           name: Create new package.json
           command: |
             mkdir -p /home/circleci/project/config
@@ -46,12 +58,11 @@ jobs:
               }
             }' > /home/circleci/project/config/package.json
       - run:
-          name: Install dependencies
+          name: Install Node.js dependencies
           command: npm install --prefix /home/circleci/project/config
       - run:
           name: Build project
-          command: |
-            find /home/circleci/project -name "index.html"
+          command: npm run build --prefix /home/circleci/project/config
           environment:
             CI: true
 
@@ -71,7 +82,7 @@ jobs:
           name: Deploy to AWS S3
           command: |
             if [ $CIRCLE_BRANCH = 'master' ]; then
-              aws s3 sync ./app/build s3://circleciproject
+              aws s3 sync ./config/build s3://circleciproject
             fi
 
 workflows:
@@ -86,4 +97,5 @@ workflows:
             branches:
               only:
                 - master
+
 
