@@ -11,6 +11,9 @@ jobs:
           name: Update npm package
           command: npx npm install -g npm@latest
       - run:
+          name: Update OpenSSL
+          command: sudo apt-get update && sudo apt-get install -y openssl
+      - run:
           name: Installing AWS CLI
           command: |
             sudo apt-get update
