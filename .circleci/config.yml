@@ -57,9 +57,7 @@ jobs:
                 ]
               }
             }' > /home/circleci/project/config/package.json
-      - run:
-          name: Install Node.js dependencies
-          command: npm install --prefix /home/circleci/project/config
+      
       - run:
           name: Build project
           command: |
