@@ -17,9 +17,6 @@ jobs:
             sudo apt-get install -y python3-pip  # Install Python 3 pip
             sudo pip3 install awscli --upgrade   # Install AWS CLI
       - run:
-          name: Navigate to project directory
-          command: cd /home/circleci/project/
-      - run:
           name: Create new package.json
           command: |
             mkdir -p /home/circleci/project/config
@@ -62,7 +59,7 @@ jobs:
       - run:
           name: Ensure index.html exists
           command: |
-            find /home/circleci/project -name "index.html" -exec cp {} /home/circleci/project/app/public/ \;      
+            cp CircleCI-ReactJS-project/app/public/index.html /home/circleci/project/config/public/      
       - run:
           name: Build project
           command: |
