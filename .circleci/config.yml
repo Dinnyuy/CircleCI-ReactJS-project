@@ -57,12 +57,18 @@ jobs:
       
       - run:
           name: Ensure config/public directory exists
-          command: mkdir -p /home/circleci/project/config/public      
+          command: mkdir -p /home/circleci/project/config/public
 
       - run:
           name: Ensure index.html exists
           command: |
-            cp app/public/index.html /home/circleci/project/config/public/ 
+            cp app/public/index.html /home/circleci/project/config/public/
+
+      - run: 
+          name: copying index.js to new directory
+          command: |
+            cp app/src/index.js /home/circleci/project/config/src/
+          
       - run:
           name: Build project
           command: |
