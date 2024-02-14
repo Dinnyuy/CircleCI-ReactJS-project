@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Ensure index.html exists
           command: |
-            cp CircleCI-ReactJS-project/app/public/index.html /home/circleci/project/config/public/      
+            cp app/public/index.html /home/circleci/project/config/public/ 
       - run:
           name: Build project
           command: |
