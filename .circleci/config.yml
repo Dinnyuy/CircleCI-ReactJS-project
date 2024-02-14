@@ -63,7 +63,9 @@ jobs:
           name: Ensure index.html exists
           command: |
             cp app/public/index.html /home/circleci/project/config/public/
-
+      -run:
+         name: Ensure index.js exists
+         command: mkdir -p /home/circleci/project/config/src
       - run: 
           name: copying index.js to new directory
           command: |
