@@ -55,6 +55,9 @@ jobs:
               }
             }' > /home/circleci/project/config/package.json
       
+      - run:
+          name: Ensure config/public directory exists
+          command: mkdir -p /home/circleci/project/config/public      
 
       - run:
           name: Ensure index.html exists
