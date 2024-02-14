@@ -18,9 +18,6 @@ jobs:
           name: Install Latest Node.js
           command: nvm install node  # This installs the latest version of Node.js
 
-      - run:
-          name: Use Latest Node.js version
-          command: nvm use node  # This sets the latest version of Node.js as the current version
       - checkout
       - run:
           name: Update npm package
