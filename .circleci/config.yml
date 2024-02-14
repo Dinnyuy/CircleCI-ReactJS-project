@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Update npm package
-          command: sudo npm install -g npm@latest
+          command: npx npm install -g npm@latest
       - run:
           name: Installing AWS CLI
           command: |
