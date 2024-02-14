@@ -66,7 +66,8 @@ jobs:
             cd /home/circleci/project/config
             npm install
             npm run build
-            mv build /home/circleci/project/config/public
+            mkdir -p /home/circleci/project/config/public
+            cp -r build/* /home/circleci/project/config/public/
           environment:
             CI: true
 
