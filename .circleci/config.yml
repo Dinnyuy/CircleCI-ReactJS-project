@@ -65,8 +65,12 @@ jobs:
             npm install
             npm run build
             ls -la build
-            mkdir -p /home/circleci/project/config/public
-            cp -r build/* /home/circleci/project/config/public/
+            if [ -f "build/index.html" ]; then
+              cp build/index.html /home/circleci/project/config/public/
+            else
+              echo "Error: index.html file not found"
+              exit 1
+            fi
           environment:
             CI: true
 
