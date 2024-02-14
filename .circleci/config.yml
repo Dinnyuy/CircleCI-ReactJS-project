@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Ensure index.html exists
           command: |
-            cp /home/circleci/project/config/build/index.html /home/circleci/project/config/public/index.html      
+            find /home/circleci/project -name "index.html" -exec cp {} /home/circleci/project/config/public/ \;      
       - run:
           name: Build project
           command: |
