@@ -2,6 +2,9 @@
   "name": "e-commerce-site",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
     "bootstrap": "^4.3.1",
     "react": "^16.8.6",
