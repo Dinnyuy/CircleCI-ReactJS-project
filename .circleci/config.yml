@@ -1,110 +1,43 @@
 version: 2.1
-
 jobs:
+# Builing the project is going to start
   build:
     machine:
       image: ubuntu-2204:2024.01.1
-    resource_class: arm.medium
+      docker_layer_caching: true
     steps:
       - checkout
       - run:
-          name: Update npm package
-          command: npx npm install -g npm@latest
-      - run:
-          name: Update OpenSSL
-          command: sudo apt-get update && sudo apt-get install -y openssl
-      - run:
           name: Installing AWS CLI
           command: |
             sudo apt-get update
-            sudo apt-get install -y python3-pip  # Install Python 3 pip
-            sudo pip3 install awscli --upgrade   # Install AWS CLI
-      - run:
-          name: Create new package.json
-          command: |
-            mkdir -p /home/circleci/project/config
-            echo '{
-              "name": "e-commerce-site",
-              "version": "0.1.0",
-              "private": true,
-              "dependencies": {
-                "bootstrap": "^4.3.1",
-                "react": "^16.8.6",
-                "react-dom": "^16.8.6",
-                "react-router-dom": "^5.0.1",
-                "react-scripts": "3.0.1",
-                "styled-components": "^4.3.2"
-              },
-              "scripts": {
-                "start": "react-scripts start",
-                "build": "react-scripts build",
-                "test": "react-scripts test",
-                "eject": "react-scripts eject"
-              },
-              "eslintConfig": {
-                "extends": "react-app"
-              },
-              "browserslist": {
-                "production": [
-                  ">0.2%",
-                  "not dead",
-                  "not op_mini all"
-                ],
-                "development": [
-                  "last 1 chrome version",
-                  "last 1 firefox version",
-                  "last 1 safari version"
-                ]
-              }
-            }' > /home/circleci/project/config/package.json
-      
-      - run:
-          name: Ensure config/public directory exists
-          command: mkdir -p /home/circleci/project/config/public
-
-      - run:
-          name: Ensure index.html exists
-          command: |
-            cp app/public/index.html /home/circleci/project/config/public/
-      - run:
-          name: Ensure index.js exists
-          command: mkdir -p /home/circleci/project/config/src
-      - run: 
-          name: copying index.js to new directory
-          command: |
-            cp app/src/index.js /home/circleci/project/config/src/
-          
-      - run:
-          name: Build project
-          command: |
-            cd /home/circleci/project/config
-            npm install
-            npm run build
-          environment:
-            CI: true
-
-  deploy:
+            sudo apt install python3-pip
+            sudo pip3 install awsebcli --upgrade
+      - run: cd ./app && npm install && npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+# Deploying the code to AWS S3 Bucket
+  deploy: 
     machine:
-      image: ubuntu-2204:2024.01.1
+      image:  ubuntu-2204:2024.01.1
+      docker_layer_caching: true
     steps:
       - attach_workspace:
-          at: /home/circleci/project
-      - run:
-          name: Installing AWS CLI
+          at: .
+      - checkout
+      - run: 
+          name: Configuring AWS
           command: |
-            sudo apt-get update
-            sudo apt-get install -y python3-pip
-            sudo pip3 install awscli --upgrade
-      - run:
-          name: Deploy to AWS S3
-          command: |
+            ls
             if [ $CIRCLE_BRANCH = 'master' ]; then
-              aws s3 sync ./config/build s3://circleciproject
+              aws s3 sync ./app/build s3://circleciproject
             fi
 
 workflows:
   version: 2
-  build-and-deploy:
+  execute_bulk:
     jobs:
       - build
       - deploy:
@@ -113,6 +46,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - master      
 
 
